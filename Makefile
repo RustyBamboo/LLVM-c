@@ -9,7 +9,7 @@ clean:
 	rm -rf tests/*.out
 
 main.byte:
-	ocamlbuild -use-menhir main.byte
+	ocamlbuild -use-ocamlfind -pkgs llvm,llvm.analysis -use-menhir main.byte
 
 tests/%.out: tests/%.in main.byte
 	./main.byte $< > $@

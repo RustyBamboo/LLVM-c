@@ -1,0 +1,8 @@
+FuncDec: int do_math
+	args:VarDec: int a
+
+	code: VarDecExpr: int x = id(a)  *  5  +  3 
+
+Expr methodcall do_math 10 
+
+reeeeee
