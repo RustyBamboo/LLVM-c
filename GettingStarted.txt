@@ -1,0 +1,45 @@
+This directory provides a skeleton project that
+is complete (but with lots of missing code marked 
+with TODO) and hints. Your job is two-fold:
+
+1. Complete the code
+2. Add more tests (20 at least) to directory tests
+
+Prerequisites
+============
+* install ocamllex, menhir and ocamlbuild with opam
+* install make (not needed on Linux or Mac)
+
+Compiling
+=========
+run "make" from command line to compile. It will produce
+the file main.byte which is executable (might need 
+to change Makefile for Windows)
+
+Testing
+========
+Add tests to directory "tests" and call them p1.in, p2.in ...
+Run "make tests" to compile your code and convert p1.in in p1.out, etc. 
+Inspect tests/p1.out, etc and see if the result makes sense
+
+Cleaning
+========
+Run "make clean" to remove all intermediate files 
+(including .out files in tests). Normally you do not need this but
+it might be useful if you suspect some of the tests are not re-run.
+Run "make clean" before you archive your code for submission.
+
+Bonus 1 (20%)
+=======
+Add support for polynomial fractions (i.e introduce /). Make sure 
+you add tests to show correctness.
+
+Hint: Add rules to deal with sums of fraction and deal with top
+and bottom of a fraction as two independent polynomials to simplify
+
+
+Bonus 2 (20%) independent of Bonus 1
+=============
+Add support for multiple variables (up to 26 due to single letter vars).
+Hint: need to generalize Term() and most other things. Each variable needs
+a separate power in the term. Add tests to show correctness.
