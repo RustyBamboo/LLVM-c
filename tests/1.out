@@ -5,4 +5,5 @@ FuncDec: int do_math
 
 Expr methodcall do_math 10 
 
-reeeeee
+ NAME a 
+

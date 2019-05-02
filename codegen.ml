@@ -33,6 +33,7 @@ let rec codegen_expr (e: expr) =
                     | _ -> failwith "oof"
             )
     | Identifier name ->
+            Printf.printf " NAME %s " name;
             let v = try Hashtbl.find named_values name with
                 | Not_found -> raise (Error "unknown variable name")
             in
@@ -40,7 +41,7 @@ let rec codegen_expr (e: expr) =
             build_load v name builder
     | _ -> failwith "codegen expr failed"
 
-let codegen_statement (s: statement) =
+and codegen_statement (s: statement) =
     match s with
     | Expr e -> codegen_expr e
     | VariableDeclarationExpr (t, n, e) -> 
@@ -51,9 +52,14 @@ let codegen_statement (s: statement) =
             let expr_val = codegen_expr (Int(0)) in
             Hashtbl.add named_values n expr_val;
             expr_val
-    (*| FunctionDeclaration (t, n, args, code) -> codegen_expr code*)
-    | _ -> failwith "oof"
+    | FunctionDeclaration (t, n, args, code) -> 
+            let doubles = Array.make (List.length args) double_type in
+            let ft = function_type double_type doubles in
+            let the_func = declare_function n ft the_module in
+            codegen_statement (List.hd args);
+            codegen_statement (List.hd code)
 
-
-
-let codegen e = Printf.printf "reeeeee"
+let rec codegen_main (b:block) = 
+    match b with
+    | [] -> dump_module the_module; ()
+    | hd::tl -> dump_value (codegen_statement hd); print_newline(); codegen_main tl

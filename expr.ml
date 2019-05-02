@@ -53,3 +53,4 @@ and
 let print_block (b:block) = 
   print_block_r b;
   print_newline ();
+  b

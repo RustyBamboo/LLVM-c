@@ -11,4 +11,4 @@ let () =
   Lexing.from_channel |>
   Parser.program Lexer.token |>
   print_block |>
-  codegen
+  codegen_main
