@@ -4,10 +4,12 @@ open Expr
 
 exception Error of string
 
+type tvals = string * llvalue
+
 let context = global_context ()
 let the_module = create_module context "my cool jit"
 let builder = builder context
-let named_values:(string, llvalue) Hashtbl.t = Hashtbl.create 10
+let named_values:(string, tvals) Hashtbl.t = Hashtbl.create 10
 let double_type = double_type context
 let int_type = i32_type context
 
@@ -37,8 +39,9 @@ let rec codegen_expr (e: expr) =
             let v = try Hashtbl.find named_values name with
                 | Not_found -> raise (Error "unknown variable name")
             in
-            (* Load the value. *)
-            build_load v name builder
+            match v with
+            | t, v -> build_load v name builder
+            | _ -> failwith "codegen expr failed"
     | _ -> failwith "codegen expr failed"
 
 and codegen_statement (s: statement) =
@@ -46,11 +49,11 @@ and codegen_statement (s: statement) =
     | Expr e -> codegen_expr e
     | VariableDeclarationExpr (t, n, e) -> 
             let expr_val = codegen_expr e in
-            Hashtbl.add named_values n expr_val;
+            Hashtbl.add named_values n (t, expr_val);
             expr_val
     | VariableDeclaration (t, n) -> 
             let expr_val = codegen_expr (Int(0)) in
-            Hashtbl.add named_values n expr_val;
+            Hashtbl.add named_values n (t, expr_val);
             expr_val
     | FunctionDeclaration (t, n, args, code) -> 
             let doubles = Array.make (List.length args) double_type in
