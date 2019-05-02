@@ -1,0 +1,6 @@
+int do_math(int a, double b) {
+  int x = a * 5 + 3
+  double y = b + 5.0
+}
+
+do_math(3, 8.0)

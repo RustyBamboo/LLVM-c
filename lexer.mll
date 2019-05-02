@@ -7,6 +7,7 @@ rule token = parse
   | [' ' '\t' '\n']          { token lexbuf }
   | ['a'-'z' 'A'-'Z' '_']['a'-'z' 'A'-'Z' '0'-'9' '_']* as s       {  TIDENTIFIER (s)}
   | ['0'-'9']+ as lxm   { TINTEGER (int_of_string lxm) }
+  | ['0'-'9']+'.'['0'-'9']* as lxm      { TDOUBLE(float_of_string lxm)}
   | "=" as s                    { TEQUAL(String.make 1 s) }
   | "==" as s                        { TCEQ(s) }
   | "!=" as s                        { TCNE(s) }

@@ -1,0 +1,4 @@
+VarDecExpr: int a = 5 
+
+Setting variable a
+
