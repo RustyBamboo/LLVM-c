@@ -1,0 +1,7 @@
+int main() {
+    int x = 1 && 0
+    int y = 1 || 0
+    printf(x)
+    printf(y)
+    0
+}

@@ -87,6 +87,8 @@ let rec codegen_expr (e: expr) =
                     | "-" -> if w = 0 then build_sub lhs_val rhs_val "subtmp" builder else build_fsub lhs_val rhs_val "subtmp" builder
                     | "*" -> if w = 0 then build_mul lhs_val rhs_val "multmp" builder else build_fmul lhs_val rhs_val "multmp" builder
                     | "/" -> if w = 0 then build_sdiv lhs_val rhs_val "divtmp" builder else build_fdiv lhs_val rhs_val "multmp" builder
+                    | "&&" -> build_and lhs_val rhs_val "andtmp" builder
+                    | "||" -> build_or lhs_val rhs_val "ortmp" builder
                     | _ -> failwith "oof"
             )
     | Identifier name ->
