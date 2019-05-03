@@ -1,0 +1,13 @@
+double zed() {
+    7.8942
+}
+
+double times(x, y)
+{
+    x * y * 3.5
+}
+
+int main() {
+    printf(7.0 / times(5.0 * zed()))
+    0
+}

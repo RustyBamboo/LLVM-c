@@ -14,7 +14,7 @@ double div(double a, double b) {
     double w = a / b
 }
 
-double main() {
+int main() {
     double z = math(8.9, 3.4)
     printf(z)
     0

@@ -1,0 +1,13 @@
+int meridian() {
+    1
+}
+
+int check(x, y)
+{
+    0 && x || y
+}
+
+int main() {
+    printf(check((0), 1))
+    0
+}

@@ -1,0 +1,13 @@
+double zed() {
+    3.564
+}
+
+double pluszed(x, y)
+{
+    x / y + zed()
+}
+
+int main() {
+    printf(pluszed(3.8, 4.1))
+    0
+}
