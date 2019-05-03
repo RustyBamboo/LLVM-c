@@ -10,8 +10,6 @@
 %token <string> TEQUAL TCEQ TCNE TCLT TCLE TCGT TCGE TCAND TCOR
 %token TCOMMA EOF
 
-%left TPLUS TMINUS
-%left TMUL TDIV
 
 %type <string> ident
 %type <Expr.expr> numeric expr 

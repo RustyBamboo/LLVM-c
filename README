@@ -12,4 +12,4 @@ The output:
     `tests/%.exe` - the executable
     `tests/%.out` - the output of the running the executable
 
-The language is similar to the one implemented in https://gnuu.org/2009/09/18/writing-your-own-toy-compiler/. It is a c-like syntax with additional support for int and double and treats the last expression as the return value for a function. The main function must be defined as part of the language.
+The language is similar to the one implemented in https://gnuu.org/2009/09/18/writing-your-own-toy-compiler/. It is a c-like syntax with additional support for int and double and treats the last expression as the return value for a function. The main function must be defined as part of the language. The `printf` takes in one argument, checks the type, and uses the C printf to print (with newline).
