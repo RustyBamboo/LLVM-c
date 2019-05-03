@@ -53,10 +53,19 @@ let rec codegen_expr (e: expr) =
                 raise (Error "incorrect # args");
             let args = List.map codegen_expr args in
             if callname = "printf" then
-                let int n = const_int int_type n in
-                let str s = define_global "buf" (const_stringz context s) the_module in
-                let int_spec = build_gep (str "%d\n") [| int 0; int 0 |] "int_spec" builder in
-                build_call callee [| int_spec; int 5 |] "" builder
+                let printval = List.hd args in
+                match classify_type (type_of printval) with
+                | TypeKind.Integer ->
+                    let const_int n = const_int int_type n in
+                    let str s = define_global "buf" (const_stringz context s) the_module in
+                    let int_spec = build_gep (str "%d\n") [| const_int 0; const_int 0 |] "int_spec" builder in
+                build_call callee [| int_spec;  (List.hd args) |] "" builder
+                | _ ->
+                    let const_int n = const_int int_type n in
+                    let str s = define_global "buf" (const_stringz context s) the_module in
+                    let int_spec = build_gep (str "%f\n") [| const_int 0; const_int 0 |] "float_spec" builder in
+                build_call callee [| int_spec;  (List.hd args) |] "" builder
+
             else
             build_call callee (Array.of_list args) "calltmp" builder
     | BinaryOperator (lhs, op, rhs) ->
@@ -126,6 +135,16 @@ and codegen_statement (s: statement) =
             let the_function = f in 
                  let bb = append_block context "entry" the_function in
                  position_at_end bb builder;
+                 let noinline = create_enum_attr context "noinline" 0L in
+                 let nounwind = create_enum_attr context "nounwind" 0L in
+                 let optnone = create_enum_attr context "optnone" 0L in
+                 let sspstrong = create_enum_attr context "sspstrong" 0L in
+                 let uwtable = create_enum_attr context "uwtable" 0L in
+                 add_function_attr the_function noinline AttrIndex.Function;
+                 add_function_attr the_function nounwind AttrIndex.Function;
+                 add_function_attr the_function optnone AttrIndex.Function;
+                 add_function_attr the_function sspstrong AttrIndex.Function;
+                 add_function_attr the_function uwtable AttrIndex.Function;
 
                  try
                    let ful = List.map codegen_statement code in

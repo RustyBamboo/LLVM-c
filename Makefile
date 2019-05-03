@@ -22,7 +22,7 @@ tests/%.llvm: tests/%.in main.byte
 	
 tests/%.exe: tests/%.llvm
 	llc $<
-	clang -fPIC -o $@ $<.s
+	clang -o $@ $<.s
 	rm $<.s
 
 tests/%.out: tests/%.exe

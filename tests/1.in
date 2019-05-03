@@ -7,7 +7,9 @@ double do_math2(double b) {
 }
 
 int main() {
-    do_math2(2.0)
-    do_math(10)
+    double q = do_math2(2.0)
+    int z = do_math(10)
+    printf(z)
+    printf(q)
     0
 }
