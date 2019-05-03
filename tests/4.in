@@ -1,0 +1,13 @@
+double circle(double r) {
+    3.14 * r * r
+}
+
+double cyl(double r, double h) {
+    h * circle(r) 
+}
+
+int main() {
+    double vol = cyl(2.0, 5.0)
+    printf(vol)
+    0
+}

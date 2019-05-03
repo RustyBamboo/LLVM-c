@@ -1,0 +1,7 @@
+int main() {
+    int a = 5/2
+    double b = 5.0/2.0
+    printf(a)
+    printf(b)
+    0
+}

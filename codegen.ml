@@ -86,6 +86,7 @@ let rec codegen_expr (e: expr) =
                     | "+" -> if w = 0 then build_add lhs_val rhs_val "addtmp" builder else build_fadd lhs_val rhs_val "addtmp" builder
                     | "-" -> if w = 0 then build_sub lhs_val rhs_val "subtmp" builder else build_fsub lhs_val rhs_val "subtmp" builder
                     | "*" -> if w = 0 then build_mul lhs_val rhs_val "multmp" builder else build_fmul lhs_val rhs_val "multmp" builder
+                    | "/" -> if w = 0 then build_sdiv lhs_val rhs_val "divtmp" builder else build_fdiv lhs_val rhs_val "multmp" builder
                     | _ -> failwith "oof"
             )
     | Identifier name ->
@@ -156,7 +157,7 @@ and codegen_statement (s: statement) =
                    let _ = build_ret ret_val builder in
 
                    (* Validate the generated code, checking for consistency. *)
-                   Llvm_analysis.assert_valid_function the_function;
+                   (*Llvm_analysis.assert_valid_function the_function;*)
 
                    the_function
                  with e ->
