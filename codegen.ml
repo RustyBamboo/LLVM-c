@@ -92,14 +92,16 @@ let rec codegen_expr (e: expr) =
                     | _ -> failwith "oof"
             )
     | Identifier name ->
+            (
             (*Printf.eprintf "Variable %s\n" name;*)
             let v = try Hashtbl.find named_values name with
                 | Not_found -> raise (Error "unknown variable name")
             in
             match v with
             | t, v -> (*build_load v name builder*) v
-            | _ -> failwith "codegen expr failed"
-    | _ -> failwith "codegen expr failed"
+            )
+
+    | Assignment (_,_) -> failwith "codegen not supported"
 
 and codegen_statement (s: statement) =
     match s with
@@ -178,7 +180,7 @@ let rec codegen_main_r (b:block) =
 
 let codegen_main (b: block) out_llvm_filename =
 
-    let print =   let string = pointer_type (i8_type context) in declare_function "printf" (var_arg_function_type int_type [|string|]) the_module in
+    let _ =   let string = pointer_type (i8_type context) in declare_function "printf" (var_arg_function_type int_type [|string|]) the_module in
     let _ = codegen_main_r b in
     let _ = write_bitcode_file the_module out_llvm_filename in ()
 

@@ -2,7 +2,7 @@ int meridian() {
     1
 }
 
-int check(x, y)
+int check(int x, int y)
 {
     0 && x || y
 }

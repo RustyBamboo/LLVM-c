@@ -2,7 +2,7 @@ double zed() {
     3.564
 }
 
-double pluszed(x, y)
+double pluszed(double x, double y)
 {
     x / y + zed()
 }

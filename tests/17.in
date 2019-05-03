@@ -1,16 +1,16 @@
-int check1 (x, y)
-{
-    int ret = check2(x,y, (x || y)) || check3(x, y)
-}
-
-int check2 (x, y, z)
+int check2 (int x, int y, int z)
 {
     int z = x && y && z   
 }
 
-int check3 (x, y)
+int check3 (int x, int y)
 {
     int c = x && (x || y)
+}
+
+int check1 (int x, int y)
+{
+    int ret = check2(x,y, (x || y)) || check3(x, y)
 }
 
 int main() {
