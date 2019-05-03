@@ -1,0 +1,8 @@
+double pi() {
+    3.141592
+}
+
+int main() {
+    printf(5.0 * 5.0 * pi())
+    0
+}

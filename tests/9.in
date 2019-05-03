@@ -1,0 +1,5 @@
+int main() {
+    double x2 = 3.1415
+    printf(x2)
+    0
+}

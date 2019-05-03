@@ -159,7 +159,7 @@ and codegen_statement (s: statement) =
                    let _ = build_ret ret_val builder in
 
                    (* Validate the generated code, checking for consistency. *)
-                   (*Llvm_analysis.assert_valid_function the_function;*)
+                   Llvm_analysis.assert_valid_function the_function;
 
                    the_function
                  with e ->
@@ -178,7 +178,7 @@ let rec codegen_main_r (b:block) =
 
 let codegen_main (b: block) out_llvm_filename =
 
-let print =   let string = pointer_type (i8_type context) in declare_function "printf" (var_arg_function_type int_type [|string|]) the_module in
+    let print =   let string = pointer_type (i8_type context) in declare_function "printf" (var_arg_function_type int_type [|string|]) the_module in
     let _ = codegen_main_r b in
     let _ = write_bitcode_file the_module out_llvm_filename in ()
 

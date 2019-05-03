@@ -1,7 +1,7 @@
 Members: Daniel Volya and Nicholas Suhlman
 
 Dependencies: 
-    - llvm, llvm.analysis, llvm.bitwriter, menhir
+    - llvm (VERSION 8), llvm.analysis, llvm.bitwriter, menhir
     - llvm-dis, llc, clang
 
 To run:
