@@ -2,4 +2,12 @@ int do_math(int a) {
   int x = a * 5 + 3
 }
 
-do_math(10)
+double do_math2(double b) {
+  double x = b * 10.0
+}
+
+int main() {
+    do_math2(2.0)
+    do_math(10)
+    0
+}

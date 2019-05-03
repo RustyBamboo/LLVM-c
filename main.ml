@@ -5,10 +5,11 @@ open Codegen
 open Expr
 
 let filename = Sys.argv.(1)
+let filename_llvm = Sys.argv.(2)
 
 let () = 
-  open_in filename |>
+    let block = open_in filename |>
   Lexing.from_channel |>
-  Parser.program Lexer.token |>
-  print_block |>
-  codegen_main
+  Parser.program Lexer.token in
+  (*|> print_block in*)
+  codegen_main block filename_llvm

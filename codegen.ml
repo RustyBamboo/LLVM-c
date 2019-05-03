@@ -43,7 +43,7 @@ let rec codegen_expr (e: expr) =
     | Int n -> const_int int_type n
     | Double n -> const_float double_type n
     | MethodCall (callee, args) -> 
-            Printf.printf "Calling function %s\n" callee;
+            (*Printf.eprintf "Calling function %s\n" callee;*)
             let callee =  match lookup_function callee the_module with
                             | Some callee -> callee
                             | None -> raise (Error "unknown function referenced")
@@ -54,11 +54,11 @@ let rec codegen_expr (e: expr) =
             let args = List.map codegen_expr args in
             build_call callee (Array.of_list args) "calltmp" builder
     | BinaryOperator (lhs, op, rhs) ->
-            Printf.printf "Operator %s\n" op;
+            (*Printf.eprintf "Operator %s\n" op;*)
             let lhs_val = codegen_expr lhs in
             let rhs_val = codegen_expr rhs in
-            Printf.printf " type LHS %s" (string_of_lltype (type_of lhs_val));
-            Printf.printf " type RHS %s\n" (string_of_lltype (type_of rhs_val));
+            (*Printf.eprintf " type LHS %s" (string_of_lltype (type_of lhs_val));
+            Printf.eprintf " type RHS %s\n" (string_of_lltype (type_of rhs_val));*)
             let w =
                 match classify_type (type_of lhs_val), classify_type (type_of rhs_val) with
                 | TypeKind.Integer, TypeKind.Integer -> 0
@@ -74,7 +74,7 @@ let rec codegen_expr (e: expr) =
                     | _ -> failwith "oof"
             )
     | Identifier name ->
-            Printf.printf "Variable %s\n" name;
+            (*Printf.eprintf "Variable %s\n" name;*)
             let v = try Hashtbl.find named_values name with
                 | Not_found -> raise (Error "unknown variable name")
             in
@@ -87,19 +87,19 @@ and codegen_statement (s: statement) =
     match s with
     | Expr e -> codegen_expr e
     | VariableDeclarationExpr (t, n, e) -> 
-            Printf.printf "Setting variable %s\n" n;
+            (*Printf.eprintf "Setting variable %s\n" n;*)
             let expr_val = codegen_expr e in
             Hashtbl.add named_values n (t, expr_val);
             expr_val
     | VariableDeclaration (t, n) -> 
-            Printf.printf "Variable declaration %s\n" n;
+            (*Printf.eprintf "Variable declaration %s\n" n;*)
             let expr_val = codegen_expr (Int(0)) in
             Hashtbl.add named_values n (t, expr_val);
             expr_val
     | FunctionDeclaration (t, name, args, code) -> 
-            Printf.printf "Declaring function %s\n" name;
+            (*Printf.eprintf "Declaring function %s: %s\n" t name;*)
             let arg = create_list_of_types args in
-            let ft = function_type double_type (Array.of_list arg) in
+            let ft = function_type (get_type t) (Array.of_list arg) in
             let f =
         match lookup_function name the_module with
             | None -> declare_function name ft the_module
@@ -129,10 +129,9 @@ and codegen_statement (s: statement) =
 
                    (* Finish off the function. *)
                    let _ = build_ret ret_val builder in
-                   Printf.printf "Added return \n";
 
                    (* Validate the generated code, checking for consistency. *)
-                   (*Llvm_analysis.assert_valid_function the_function;*)
+                   Llvm_analysis.assert_valid_function the_function;
 
                    the_function
                  with e ->
@@ -145,16 +144,14 @@ and codegen_statement (s: statement) =
 let rec codegen_main_r (b:block) = 
     match b with
     | [] ->()
-    | hd::tl -> (codegen_statement hd); print_newline(); codegen_main_r tl
+    | hd::tl -> (codegen_statement hd); codegen_main_r tl
 
-let codegen_main (b: block) =
-    let doubles = Array.make (0) int_type in
-      let ft = function_type int_type doubles in
-      let the_function = declare_function "main" ft the_module in 
-      let bb = append_block context "entry" the_function in
-      let _ = codegen_main_r b in
-      position_at_end bb builder;
-      let _ = build_ret (codegen_expr (Int(34))) builder in
-    dump_module the_module; let _ = write_bitcode_file the_module "out_bitcode" in ()
+
+let print =   let string = (int_type) in declare_function "printf" (var_arg_function_type int_type [|string|]) the_module
+
+let codegen_main (b: block) out_llvm_filename =
+
+    let _ = codegen_main_r b in
+    let _ = write_bitcode_file the_module out_llvm_filename in ()
 
 
