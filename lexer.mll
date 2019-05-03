@@ -15,6 +15,8 @@ rule token = parse
   | "<=" as s                        { TCLE(s) }
   | ">"  as s                        { TCGT(String.make 1 s) }
   | ">=" as s                        { TCGE(s) }
+  | "&&" as s                        { TCAND(s) }
+  | "||" as s                        { TCOR(s) }
   | "+"  as s                        { TPLUS(String.make 1 s) }
   | "-"  as s                        { TMINUS(String.make 1 s) }
   | "*"  as s                        { TMUL(String.make 1 s) }
