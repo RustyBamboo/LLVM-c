@@ -1,0 +1,21 @@
+double math(double a, double b) {
+  double x = plus(a, b) + times(div(a, b), (plus(a, b))
+}
+
+double plus(double a, double b) {
+    double y = a + b
+}
+
+double times(double a, double b) {
+    double z = a * b
+}
+
+double div(double a, double b) {
+    double w = a / b
+}
+
+double main() {
+    double z = math(8.9, 3.4)
+    printf(z)
+    0
+}

@@ -1,0 +1,24 @@
+; ModuleID = 'tests/2.llvm'
+source_filename = "awesome jit"
+
+@buf = global [4 x i8] c"%d\0A\00"
+
+declare i32 @printf(i8*, ...)
+
+; Function Attrs: noinline nounwind optnone sspstrong uwtable
+define double @do_math(i32 %a, double %b) #0 {
+entry:
+  %multmp = mul i32 %a, 8
+  %addtmp = fadd double %b, 5.000000e+00
+  ret double %addtmp
+}
+
+; Function Attrs: noinline nounwind optnone sspstrong uwtable
+define i32 @main() #0 {
+entry:
+  %calltmp = call double @do_math(i32 3, double 8.000000e+00)
+  %0 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @buf, i32 0, i32 0), i32 2)
+  ret i32 0
+}
+
+attributes #0 = { noinline nounwind optnone sspstrong uwtable }

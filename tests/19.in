@@ -1,0 +1,11 @@
+int booltest(double a, double b) {
+  double x = a + b
+  double y = b * a
+  y && x
+}
+
+int main() {
+    double z = booltest(2.0, 2.0)
+    printf(z)
+    0
+}

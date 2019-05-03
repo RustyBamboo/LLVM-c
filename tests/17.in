@@ -1,0 +1,20 @@
+int check1 (x, y)
+{
+    int ret = check2(x,y, (x || y)) || check3(x, y)
+}
+
+int check2 (x, y, z)
+{
+    int z = x && y && z   
+}
+
+int check3 (x, y)
+{
+    int c = x && (x || y)
+}
+
+int main() {
+    int val = check1(1, 0)
+    printf(val)
+    0
+}
