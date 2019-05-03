@@ -11,6 +11,7 @@ clean:
 	rm -rf tests/*.llvm
 	rm -rf tests/*.exe
 	rm -rf tests/*.out
+	rm -rf tests/*.s
 
 main.byte:
 	ocamlbuild -use-ocamlfind -pkgs llvm,llvm.analysis,llvm.bitwriter -use-menhir main.byte
@@ -21,7 +22,7 @@ tests/%.llvm: tests/%.in main.byte
 	
 tests/%.exe: tests/%.llvm
 	llc $<
-	clang -o $@ $<.s
+	clang -fPIC -o $@ $<.s
 	rm $<.s
 
 tests/%.out: tests/%.exe

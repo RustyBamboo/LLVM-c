@@ -42,9 +42,9 @@ let rec codegen_expr (e: expr) =
     match e with
     | Int n -> const_int int_type n
     | Double n -> const_float double_type n
-    | MethodCall (callee, args) -> 
-            (*Printf.eprintf "Calling function %s\n" callee;*)
-            let callee =  match lookup_function callee the_module with
+    | MethodCall (callname, args) -> 
+            (*Printf.eprintf "Calling function %s\n" callname;*)
+            let callee =  match lookup_function callname the_module with
                             | Some callee -> callee
                             | None -> raise (Error "unknown function referenced")
             in
@@ -52,6 +52,12 @@ let rec codegen_expr (e: expr) =
             if Array.length params == List.length args then () else
                 raise (Error "incorrect # args");
             let args = List.map codegen_expr args in
+            if callname = "printf" then
+                let int n = const_int int_type n in
+                let str s = define_global "buf" (const_stringz context s) the_module in
+                let int_spec = build_gep (str "%d\n") [| int 0; int 0 |] "int_spec" builder in
+                build_call callee [| int_spec; int 5 |] "" builder
+            else
             build_call callee (Array.of_list args) "calltmp" builder
     | BinaryOperator (lhs, op, rhs) ->
             (*Printf.eprintf "Operator %s\n" op;*)
@@ -147,10 +153,10 @@ let rec codegen_main_r (b:block) =
     | hd::tl -> (codegen_statement hd); codegen_main_r tl
 
 
-let print =   let string = (int_type) in declare_function "printf" (var_arg_function_type int_type [|string|]) the_module
 
 let codegen_main (b: block) out_llvm_filename =
 
+let print =   let string = pointer_type (i8_type context) in declare_function "printf" (var_arg_function_type int_type [|string|]) the_module in
     let _ = codegen_main_r b in
     let _ = write_bitcode_file the_module out_llvm_filename in ()
 
