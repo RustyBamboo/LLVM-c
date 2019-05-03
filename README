@@ -1,0 +1,15 @@
+Members: Daniel Volya and Nicholas Suhlman
+
+Dependencies: 
+    - llvm, llvm.analysis, llvm.bitwriter, menhir
+    - llvm-dis, llc, clang
+
+To run:
+    `make tests`
+
+The output:
+    `tests/%.llvm` - human-readable llvm
+    `tests/%.exe` - the executable
+    `tests/%.out` - the output of the running the executable
+
+The language is similar to the one implemented in https://gnuu.org/2009/09/18/writing-your-own-toy-compiler/. It is a c-like syntax with additional support for int and double and treats the last expression as the return value for a function. The main function must be defined as part of the language.
