@@ -1,0 +1,13 @@
+double pi() {
+    3.1415
+}
+
+double e() {
+    2.7182
+}
+
+int main() {
+    double x = e() * pi()
+    printf(x)
+    0
+}
